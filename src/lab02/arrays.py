@@ -1,7 +1,8 @@
 def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
-    """Возвращает кортеж (минимум, максимум) без использования встроенных min() и max()."""
-    if not nums:
-        raise ValueError("Список не должен быть пустым")
+    """Возвращает минимум и максимум списка без min() и max()."""
+    if not len(nums):
+        raise ValueError("список пуст")
+
     mn = mx = nums[0]
     for x in nums:
         if x < mn:
@@ -13,11 +14,11 @@ def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
 
 def unique_sorted(nums: list[float | int]) -> list[float | int]:
     """Возвращает отсортированный список уникальных элементов без sort() и sorted()."""
-    # Собираем уникальные элементы
     unique = []
     for x in nums:
         if x not in unique:
             unique.append(x)
+
     for i in range(len(unique)):
         for j in range(len(unique) - 1):
             if unique[j] > unique[j + 1]:
@@ -26,53 +27,44 @@ def unique_sorted(nums: list[float | int]) -> list[float | int]:
 
 
 def flatten(mat: list[list | tuple]) -> list:
-    """«Расплющивает» список списков/кортежей в один одномерный список."""
-    res = []
+    """Переводит матрицу в плоский список."""
+    vector = []
     for row in mat:
         if not isinstance(row, (list, tuple)):
-            raise TypeError("«строка не строка строк матрицы»")
-        for x in row:
-            res.append(x)
-    return res
+            raise TypeError("передана не матрица")
+        vector.extend(row)
+    return vector
 
 
 if __name__ == "__main__":
-    print("min_max:")
-    cases_min_max = [
-        [3, -1, 5, 5, 0],
-        [42],
-        [-5, -2, -9],
-        [],
-        [1.5, 2, 2.0, -3.1],
-    ]
-    for case in cases_min_max:
-        try:
-            print(f"  {case} -> {min_max(case)}")
-        except ValueError:
-            print(f"  {case} -> ValueError")
+    print("Тест кейсы:")
 
-    print("\nunique_sorted:")
-    cases_unique = [
-        [3, 1, 2, 1, 3],
-        [],
-        [-1, -1, 0, 2, 2],
-        [1.0, 1, 2.5, 2.5, 0],
-    ]
-    for case in cases_unique:
-        print(f"  {case} -> {unique_sorted(case)}")
+    print(f"""
+min_max
 
-    print("\nflatten:")
-    cases_flatten = [
-        [[1, 2], [3, 4]],
-        [[1, 2], (3, 4, 5)],
-        [[1], [], [2, 3]],
-        [[1, 2], "ab"],
-    ]
-    for case in cases_flatten:
-        try:
-            print(f"  {case} -> {flatten(case)}")
-        except TypeError:
-            print(f"  {case} -> TypeError")
+[3, -1, 5, 5, 0] -> {min_max([3, -1, 5, 5, 0])}
+[42] -> {min_max([42])}
+[-5, -2, -9] -> {min_max([-5, -2, -9])}
+[1.5, 2, 2.0, -3.1] -> {min_max([1.5, 2, 2.0, -3.1])}
+""")
+    # Ошибка ValueError:
+    #print(f"[] -> {min_max([])}")
 
+    print(f"""
+unique_sorted
 
+[3, 1, 2, 1, 3] -> {unique_sorted([3, 1, 2, 1, 3])}
+[] -> {unique_sorted([])}
+[-1, -1, 0, 2, 2] -> {unique_sorted([-1, -1, 0, 2, 2])}
+[1.0, 1, 2.5, 2.5, 0] -> {unique_sorted([1.0, 1, 2.5, 2.5, 0])}
+""")
 
+    print(f"""
+flatten
+
+[[1, 2], [3, 4]] -> {flatten([[1, 2], [3, 4]])}
+[[1, 2], (3, 4, 5)] -> {flatten([[1, 2], (3, 4, 5)])}
+[[1], [], [2, 3]] -> {flatten([[1], [], [2, 3]])}
+""")
+    # Ошибка TypeError:
+    print(f'[[1, 2], "ab"] -> {flatten([[1, 2], "ab"])}')

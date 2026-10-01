@@ -1,113 +1,81 @@
-def transpose(mat: list[list[float | int]]) -> list[list[float | int]]:
-    '''
-    Поменять строки и столбцы местами. Пустая матрица [] → [].
-    Если матрица «рваная» (строки разной длины) — ValueError.
-    '''
+def transpose(mat: list[list[float | int]]) -> list[list]:
+    """Транспонирует прямоугольную матрицу (меняет строки и столбцы местами)."""
     if not mat:
         return []
-    cols = len(mat[0])
-    for row in mat:
-        if len(row) != cols:
-            raise ValueError("Рваная матрица")
 
-    rows = len(mat)
-    trans_mat: list[list[float | int]] = [[0] * rows for _ in range(cols)]
-    for r in range(rows):
-        for c in range(cols):
-            trans_mat[c][r] = mat[r][c]
-    return trans_mat
+    row_len = len(mat[0])
+    for row in mat:
+        if len(row) != row_len:
+            raise ValueError("Матрица должна быть прямоугольной")
+
+    if row_len == 0:
+        return []
+
+    return [[mat[r][c] for r in range(len(mat))] for c in range(row_len)]
 
 
 def row_sums(mat: list[list[float | int]]) -> list[float]:
-    """Сумма по каждой строке матрицы.
-
-    Args:
-        mat: Прямоугольная матрица чисел.
-
-    Returns:
-        Список сумм по строкам.
-
-    Raises:
-        ValueError: Если матрица «рваная» (строки разной длины).
-    """
+    """Вычисляет сумму элементов каждой строки прямоугольной матрицы."""
     if not mat:
         return []
 
-    cols = len(mat[0])
-    sum_mat = []
-
+    row_len = len(mat[0])
     for row in mat:
-        if len(row) != cols:
-            raise ValueError("Рваная матрица")
-        sum_mat.append(sum(row))
+        if len(row) != row_len:
+            raise ValueError("Матрица должна быть прямоугольной")
 
-    return sum_mat
+    return [sum(row) for row in mat]
 
 
 def col_sums(mat: list[list[float | int]]) -> list[float]:
-    """Сумма по каждому столбцу матрицы.
-
-    Args:
-        mat: Прямоугольная матрица чисел.
-
-    Returns:
-        Список сумм по каждому столбцу.
-
-    Raises:
-        ValueError: Если матрица «рваная».
-    """
+    """Вычисляет сумму элементов каждого столбца прямоугольной матрицы."""
     if not mat:
         return []
-    cols = len(mat[0])
+
+    row_len = len(mat[0])
     for row in mat:
-        if len(row) != cols:
-            raise ValueError("Рваная матрица")
+        if len(row) != row_len:
+            raise ValueError("Матрица должна быть прямоугольной")
+
+    if row_len == 0:
+        return []
+
     sums = []
-    for c in range(cols):
-        col_total = 0
-        for row in mat:
-            col_total += row[c]
-        sums.append(col_total)
+    for c in range(row_len):
+        sums.append(sum(mat[r][c] for r in range(len(mat))))
     return sums
 
 
 if __name__ == "__main__":
-    print("transpose:")
-    cases_transpose = [
-        [[1, 2, 3]],
-        [[1], [2], [3]],
-        [[1, 2], [3, 4]],
-        [],
-        [[1, 2], [3]],
-    ]
-    for case in cases_transpose:
-        try:
-            print(f"  {case} -> {transpose(case)}")
-        except ValueError:
-            print(f"  {case} -> ValueError")
+    print("Тест кейсы:")
 
-    print("\nrow_sums:")
-    cases_row_sums = [
-        [[1, 2, 3], [4, 5, 6]],
-        [[-1, 1], [10, -10]],
-        [[0, 0], [0, 0]],
-        [[1, 2], [3]],
-    ]
-    for case in cases_row_sums:
-        try:
-            print(f"  {case} -> {row_sums(case)}")
-        except ValueError:
-            print(f"  {case} -> ValueError")
+    print(f"""
+transpose
 
-    print("\ncol_sums:")
-    cases_col_sums = [
-        [[1, 2, 3], [4, 5, 6]],
-        [[-1, 1], [10, -10]],
-        [[0, 0], [0, 0]],
-        [[1, 2], [3]],
-    ]
-    for case in cases_col_sums:
-        try:
-            print(f"  {case} -> {col_sums(case)}")
-        except ValueError:
-            print(f"  {case} -> ValueError")
+[[1, 2, 3]] -> {transpose([[1, 2, 3]])}
+[[1], [2], [3]] -> {transpose([[1], [2], [3]])}
+[[1, 2], [3, 4]] -> {transpose([[1, 2], [3, 4]])}
+[] -> {transpose([])}
+""")
+    # Ошибка ValueError:
+    #print(f"[[1, 2], [3]] -> {transpose([[1, 2], [3]])}")
+
+    print(f"""
+row_sums
+
+[[1, 2, 3], [4, 5, 6]] -> {row_sums([[1, 2, 3], [4, 5, 6]])}
+[[-1, 1], [10, -10]] -> {row_sums([[-1, 1], [10, -10]])}
+[[0, 0], [0, 0]] -> {row_sums([[0, 0], [0, 0]])}
+""")
+    # Ошибка ValueError:
+    #print(f"[[1, 2], [3]] -> {row_sums([[1, 2], [3]])}")
+
+    print(f"""
+col_sums
+
+[[1, 2, 3], [4, 5, 6]] -> {col_sums([[1, 2, 3], [4, 5, 6]])}
+[[-1, 1], [10, -10]] -> {col_sums([[-1, 1], [10, -10]])}
+[[0, 0], [0, 0]] -> {col_sums([[0, 0], [0, 0]])}
+""")
+    # Ошибка ValueError:
+    print(f"[[1, 2], [3]] -> {col_sums([[1, 2], [3]])}")
