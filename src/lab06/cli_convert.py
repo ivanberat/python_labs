@@ -1,8 +1,3 @@
-"""ЛР6, задание B: CLI-подкоманды json2csv, csv2json, csv2xlsx поверх функций ЛР5.
-
-Запуск из корня репозитория:
-    python3 -m src.lab06.cli_convert json2csv --in data/samples/people.json --out data/out/people.csv
-"""
 import argparse
 import sys
 from pathlib import Path
