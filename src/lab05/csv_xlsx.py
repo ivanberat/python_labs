@@ -10,8 +10,6 @@ from openpyxl.utils import get_column_letter
 ENCODING = "utf-8"
 SHEET_NAME = "Sheet1"
 MIN_WIDTH = 8
-# корень репозитория: src/lab05/csv_xlsx.py → на два уровня вверх от папки lab05
-ROOT = Path(__file__).resolve().parents[2]
 
 
 def _check_suffix(path: Path, suffix: str) -> None:
@@ -75,8 +73,8 @@ def _describe(xlsx_path: Path) -> None:
 
 def _demo() -> None:
     """Сценарий 3: конвертирует примеры из data/samples в data/out и проверяет результат."""
-    samples = ROOT / "data" / "samples"
-    out = ROOT / "data" / "out"
+    samples = Path("data") / "samples"
+    out = Path("data") / "out"
     for name in ("people", "cities"):
         csv_to_xlsx(samples / f"{name}.csv", out / f"{name}.xlsx")
         with (samples / f"{name}.csv").open(encoding=ENCODING, newline="") as f:

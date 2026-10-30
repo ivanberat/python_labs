@@ -5,9 +5,6 @@ import tempfile
 from pathlib import Path
 
 ENCODING = "utf-8"
-# корень репозитория: src/lab05/json_csv.py → на два уровня вверх от папки lab05
-ROOT = Path(__file__).resolve().parents[2]
-
 
 def _check_suffix(path: Path, suffix: str) -> None:
     """Проверяет расширение файла, иначе ValueError."""
@@ -103,8 +100,8 @@ def _check(condition: bool, message: str) -> None:
 
 def _demo() -> None:
     """Сценарии 1 и 2 из README: конвертация и сравнение с источником."""
-    samples = ROOT / "data" / "samples"
-    out = ROOT / "data" / "out"
+    samples = Path("data") / "samples"
+    out = Path("data") / "out"
 
     # Сценарий 1: JSON → CSV. Заголовок = объединение ключей, строк = записей.
     json_to_csv(samples / "people.json", out / "people_from_json.csv")
